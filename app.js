@@ -1,22 +1,21 @@
 import express from 'express';
 // import cors from 'cors';
 import compression from 'compression';
-import { fileURLToPath } from 'url';
-import path, { join, dirname } from 'path';
 
 import connectToDb from './db/db.js';
 import api from './routes/api/index.js';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-const __filename = dirname(fileURLToPath(import.meta.url));
-const __dirname = path.dirname(__filename);
-
 app.use(compression());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// Handle GET requests to /api route
+app.get("*", (req, res) => {
+    res.json({ message: "Hello from server!" });
+});
 
 app.use('/api', api);
 
