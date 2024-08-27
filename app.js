@@ -12,14 +12,18 @@ app.use(compression());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(cors());
+//cors handling
+// CORS is enabled for the selected origins
+let corsOptions = {
+    origin: 'https://sales-mern.onrender.com'
+};
 
 // Handle GET requests to / route
 app.use("*", (req, res) => {
     res.json({ message: "Hello from server!" });
 });
 
-app.use('/api', api);
+app.use('/api',cors(corsOptions), api);
 
 Promise.all([connectToDb()])
     .then( () => app.listen(PORT, () => console.log(`Server is running on port ${PORT}`)))
