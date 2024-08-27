@@ -20,9 +20,10 @@ export default async (req, res) => {
                 return res.status(422).json({ error: "Passwords not matching!"});
             } else {
 
-                const hashCpassword = bcrypt.hash(this.password, 12);
+                const salt = 12;
+                const hashPassword = bcrypt.hash(password, salt);
 
-                const user = new User({name, email, password: hashCpassword, cpassword: hashCpassword});
+                const user = new User({name, email, password: hashPassword, cpassword: hashPassword});
 
                 user.save().then(() => {
                     res.status(201).json({ message: "User sign up sucessfuly!!" });

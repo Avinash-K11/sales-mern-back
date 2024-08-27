@@ -1,5 +1,5 @@
 import express from 'express';
-// import cors from 'cors';
+import cors from 'cors';
 import compression from 'compression';
 
 import connectToDb from './db/db.js';
@@ -12,8 +12,10 @@ app.use(compression());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Handle GET requests to /api route
-app.get("*", (req, res) => {
+app.use(cors());
+
+// Handle GET requests to / route
+app.use("*", (req, res) => {
     res.json({ message: "Hello from server!" });
 });
 
