@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 app.use('/api', api);
 
 // handleing not implemented routes
-app.all("*", (req, res) => {
+app.use("*", (req, res) => {
   res.status(404).send('<h1>404! Page not found</h1>');
 });
 

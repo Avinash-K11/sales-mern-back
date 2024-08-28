@@ -23,10 +23,10 @@ export default async (req, res) => {
                 const salt = 12;
                 const hashPassword = bcrypt.hash(password, salt);
 
-                const user = new User({name, email, password: hashPassword, cpassword: hashPassword});
+                const userCreated = new User.create({name, email, password: hashPassword, cpassword: hashPassword});
 
-                user.save().then(() => {
-                    res.status(201).json({ message: "User sign up sucessfuly!!" });
+                userCreated.save().then(() => {
+                    res.status(201).json({ message: "User sign up sucessfuly!!", token: userCreated.generaToken() });
                 }).catch((error) => res.status(500).json({ error: "Failed to register" }) );
             }
 

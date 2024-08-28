@@ -23,24 +23,22 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    tokens:[
-        {
-            token: {
-                type: String,
-            },
-        },
-    ],
 });
 
 
 //generating jwt token
 
-userSchema.methods.generateAuthLogin = async function() {
+userSchema.methods.generaToken = async function() {
     try{
-        let token = jwt.sign({_id:this._id}, process.env.SECRET_KEY);
-        this.tokens = this.tokens.concat({ token:token }); 
-        await this.save();
-        return token;
+        return jwt.sign({
+            userId : this._id.toString(),
+            email: this.email
+            }, 
+            process.env.SECRET_KEY,
+            {
+                expiresIn: "30d"
+            }
+        );
     } catch (error) {
         console.log(error);
     }
