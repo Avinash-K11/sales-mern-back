@@ -18,11 +18,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Handle GET requests to / route
-app.use("*", (req, res) => {
-    res.json({ message: "Hello from server!" });
+app.get('/', (req, res) => {
+  res.send('<h1>Home page</h1>');
 });
 
 app.use('/api', api);
+
+// handleing not implemented routes
+app.all("*", (req, res) => {
+  res.status(404).send('<h1>404! Page not found</h1>');
+});
 
 Promise.all([connectToDb()])
     .then( () => app.listen(PORT, () => console.log(`Server is running on port ${PORT}`)))
