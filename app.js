@@ -7,26 +7,15 @@ import api from './routes/api/index.js';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-app.use(compression());
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 //cors handling
-const corsOpts = {
-    origin: '*',
-  
-    methods: [
-      'GET',
-      'POST',
-    ],
-  
-    allowedHeaders: [
-      'Content-Type',
-    ],
-};
+app.use(cors({
+  origin: "http://localhost:3000"
+}));
 
-app.use(cors(corsOpts));
+app.use(compression());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Handle GET requests to / route
 app.use("*", (req, res) => {
