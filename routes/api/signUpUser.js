@@ -14,7 +14,7 @@ export default async (req, res) => {
         return res.status(422).json({ error: "Please fill all the fields"});
     }
 
-    await User.findOne({ email:email })
+    await User.findOne({ email })
         .then((userExists) => {
             if(userExists) {
                 return res.status(422).json({ error: "User already exits or use another email"});
@@ -28,7 +28,11 @@ export default async (req, res) => {
                 const userCreated = new User.create({name:name, email:email, password: hashPassword, cpassword: hashPassword});
 
                 userCreated.save().then(() => {
-                    res.status(201).json({ message: "User sign up sucessfuly!!", token: userCreated.generaToken() });
+                    res.status(201).json({ 
+                        message: "User sign up sucessfuly!!", 
+                        token: userCreated.generaToken(),
+                        userId: userCreated._id.toString(), 
+                    });
                 }).catch((error) => res.status(500).json({ error: "Failed to register" }) );
             }
 

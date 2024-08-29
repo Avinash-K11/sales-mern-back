@@ -21,25 +21,20 @@ export default async (req, res) => {
 
             const isMatch = await bcrypt.compare(password, loginUser.password);
 
-            const token = await loginUser.generateAuthLogin();
-
-            res.cookie("jwtoken", token, {
-                expires:new Date(Date.now() + 18000000),
-                httponly: true
-            });
-
             if(!isMatch) {
                 res.status(400).json({ message: "Invalid credential!" });
             } else {
-                res.json({ message: "Logged In!" });
+                res.status(201).json({ 
+                    message: "User sign up sucessfuly!!", 
+                    token: loginUser.generaToken(),
+                    userId: loginUser._id.toString(),  
+                });
             }
         } else {
-            res.status(400).json({ message: "Invalid credential!" });
+            res.status(401).json({ message: "Invalid credential!" });
         }
 
     } catch (error) {
-        console.log(error);
+        res.status(500).json("Internal Server Error!");
     }
-
-    res.json({ message: "ok" });
 }
