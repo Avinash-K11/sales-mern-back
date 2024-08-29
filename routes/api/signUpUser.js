@@ -3,9 +3,11 @@ import bcrypt from 'bcryptjs';
 import User from "../../Models/User.js";
 import connectToDb from "../../db/db.js";
 
-connectToDb();
 
 export default async (req, res) => {
+
+    connectToDb();
+
     let { name, email, password, cpassword } = req.body;
 
     if( !name || !email ||  !password ||  !cpassword ) {
