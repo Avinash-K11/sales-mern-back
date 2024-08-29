@@ -8,10 +8,13 @@ import api from './routes/api/index.js';
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+// enabling CORS for some specific origins only.
+let corsOptions = {
+  origin : ['http://localhost:3000'],
+}
+
 //cors handling
-app.use(cors({
-  origin: "http://localhost:3000"
-}));
+app.use(cors(corsOptions));
 
 app.use(compression());
 app.use(express.urlencoded({ extended: false }));
@@ -22,7 +25,7 @@ app.get('/', (req, res) => {
   res.send('<h1>Home page</h1>');
 });
 
-app.use('/api', api);
+app.use('/api', cors(corsOptions), api);
 
 // handleing not implemented routes
 app.get("*", (req, res) => {

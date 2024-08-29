@@ -23,7 +23,7 @@ export default async (req, res) => {
                 const salt = 12;
                 const hashPassword = bcrypt.hash(password, salt);
 
-                const userCreated = new User.create({name, email, password: hashPassword, cpassword: hashPassword});
+                const userCreated = new User.create({name:name, email:email, password: hashPassword, cpassword: hashPassword});
 
                 userCreated.save().then(() => {
                     res.status(201).json({ message: "User sign up sucessfuly!!", token: userCreated.generaToken() });
