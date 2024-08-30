@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import User from "../../Models/User.js";
 import connectToDb from "../../db/db.js";
 
+import { generateToken } from '../../Models/jwt/index.js';
 
 export default async (req, res) => {
 
@@ -14,27 +15,29 @@ export default async (req, res) => {
         return res.status(422).json({ error: "Please fill all the fields"});
     }
 
-    await User.findOne({ email })
-        .then((userExists) => {
-            if(userExists) {
-                return res.status(422).json({ error: "User already exits or use another email"});
-            } else if ( password !== cpassword ) {
-                return res.status(422).json({ error: "Passwords not matching!"});
-            } else {
+    const userExists = await User.findOne({ email });
+        
+    if(userExists) {
+        return res.status(422).json({ error: "User already exits or use another email"});
+    } else if ( password !== cpassword ) {
+        return res.status(422).json({ error: "Passwords not matching!"});
+    } else {
 
-                const salt = 12;
-                const hashPassword = bcrypt.hash(password, salt);
+        const salt = 12;
+        const hashPassword = await bcrypt.hash(password, salt);
 
-                const userCreated = new User.create({name:name, email:email, password: hashPassword, cpassword: hashPassword});
+        const userCreated = await User.create({name, email, password:hashPassword, cpassword:hashPassword });
 
-                userCreated.save().then(() => {
-                    res.status(201).json({ 
-                        message: "User sign up sucessfuly!!", 
-                        token: userCreated.generaToken(),
-                        userId: userCreated._id.toString(), 
-                    });
-                }).catch((error) => res.status(500).json({ error: "Failed to register" }) );
-            }
+        if(userCreated) {
+            const token = generateToken(userCreated);
 
-        }).catch((error) => { console.log(error); } );
+            res.status(201).json({ 
+                message: "User sign up sucessfuly!!", 
+                token: token,
+                userId: userCreated._id.toString(), 
+            });
+        } else {
+            res.status(500).json({ error: "Failed to register" });
+        }
+    }
 };

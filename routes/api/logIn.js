@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
 import User from "../../Models/User.js";
 import connectToDb from "../../db/db.js";
+import { generateToken } from '../../Models/jwt/index.js';
 
 connectToDb();
 
@@ -24,9 +24,12 @@ export default async (req, res) => {
             if(!isMatch) {
                 res.status(400).json({ message: "Invalid credential!" });
             } else {
+
+                const token = generateToken(loginUser);
+
                 res.status(201).json({ 
                     message: "User sign up sucessfuly!!", 
-                    token: loginUser.generaToken(),
+                    token: token,
                     userId: loginUser._id.toString(),  
                 });
             }

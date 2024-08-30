@@ -5,7 +5,7 @@ import compression from 'compression';
 import connectToDb from './db/db.js';
 import api from './routes/api/index.js';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 
 // enabling CORS for some specific origins only.
@@ -22,14 +22,14 @@ app.use(express.json());
 
 // Handle GET requests to / route
 app.get('/', (req, res) => {
-  res.send('<h1>Home page</h1>');
+  res.send('Home page');
 });
 
 app.use('/api', cors(corsOptions), api);
 
 // handleing not implemented routes
-app.get("*", (req, res) => {
-  res.status(404).send('<h1>404! Page not found</h1>');
+app.all("*", (req, res) => {
+  res.status(404).send('404! Page not found');
 });
 
 Promise.all([connectToDb()])

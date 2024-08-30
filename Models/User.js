@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 
 const userSchema = new Schema({
     name: {
@@ -26,24 +26,26 @@ const userSchema = new Schema({
     },
 });
 
+// //generating jwt token
 
-//generating jwt token
+// userSchema.methods.generateToken = async function() {
 
-userSchema.methods.generaToken = async function() {
-    try{
-        return jwt.sign({
-            userId : this._id.toString(),
-            email: this.email
-            }, 
-            process.env.SECRET_KEY,
-            {
-                expiresIn: "30d"
-            }
-        );
-    } catch (error) {
-        console.log(error);
-    }
-}
+//     const secret = process.env.SECRET_KEY;
+
+//     try{
+//         return jwt.sign({
+//             userId : this._id.toString(),
+//             email: this.email,
+//             }, 
+//             secret,
+//             {
+//                 expiresIn: "30d",
+//             }
+//         );
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
 
 const User = model("User", userSchema);
 
