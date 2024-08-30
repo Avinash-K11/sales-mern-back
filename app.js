@@ -10,7 +10,10 @@ const app = express();
 
 // enabling CORS for some specific origins only.
 let corsOptions = {
-  origin : ['http://localhost:3000'],
+  origin : [
+    'http://localhost:3000',
+    'https://sales-mern.onrender.com'
+  ],
 }
 
 //cors handling
