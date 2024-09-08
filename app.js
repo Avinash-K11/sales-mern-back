@@ -1,9 +1,15 @@
 import express from 'express';
+import dotenv from 'dotenv';
 import cors from 'cors';
 import compression from 'compression';
 
+import {join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
 import connectToDb from './db/db.js';
 import api from './routes/api/index.js';
+
+dotenv.config();
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -23,14 +29,12 @@ app.use(compression());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Handle GET requests to / route
-app.get('/', (req, res) => {
-  res.send('Home page');
-});
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+app.use(express.static(join(__dirname, 'public')));
 
 app.use('/api', cors(corsOptions), api);
 
-// handleing not implemented routes
 app.all("*", (req, res) => {
   res.status(404).send('404! Page not found');
 });

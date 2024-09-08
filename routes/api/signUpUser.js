@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import User from "../../Models/User.js";
 import connectToDb from "../../db/db.js";
 
-import { generateToken } from '../../Models/jwt/index.js';
+import { generateToken } from '../../jwt/index.js';
 
 export default async (req, res) => {
 

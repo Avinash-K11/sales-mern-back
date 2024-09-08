@@ -1,7 +1,11 @@
 import { Schema, model } from 'mongoose';
 
-const userSchema = new Schema({
+const contactSchema = new Schema({
     name: {
+        type: String,
+        required: true,
+    },
+    subject: {
         type: String,
         required: true,
     },
@@ -10,21 +14,17 @@ const userSchema = new Schema({
         unique: true,
         required: true,
     },
-    password: {
+    country: {
         type: String,
         required: true,
     },
-    cpassword: {
+    message: {
         type: String,
         required: true,
     },
     createdAt: { type: Date, default: Date.now},
-    isAdmin: {
-        type: Boolean,
-        default: false,
-    },
 });
 
-const User = model("User", userSchema);
+const Contact = model("Contact", contactSchema);
 
-export default User;
+export default Contact;
